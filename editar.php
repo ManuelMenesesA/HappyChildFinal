@@ -1,3 +1,36 @@
+<?php 
+include("db.php"); 
+$title = '';
+$description= '';
+$link= '';
+
+if  (isset($_GET['id'])) {
+  $id = $_GET['id'];
+  $query = "SELECT * FROM contenido WHERE id=$id";
+  $result= mysqli_query($conn, $query);
+  if (mysqli_num_rows($result) == 1) {
+    $row = mysqli_fetch_array($result);
+    $title = $row['titulo'];
+    $description = $row['descripcion'];
+    $link = $row['link'];
+  }
+}
+
+if (isset($_POST['update'])) {
+  $id = $_GET['id'];
+  $title= $_POST['titulo'];
+  $description = $_POST['descripcion'];
+  $link = $_POST['link'];
+
+  $query = "UPDATE contenido set titulo = '$title', descripcion = '$description', link= '$link' WHERE id=$id";
+  mysqli_query($conn, $query);
+  $_SESSION['message'] = 'Contenido Actualizado';
+  $_SESSION['message_type'] = 'Error';
+  header('Location: crudd.php');
+}
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -16,6 +49,9 @@
     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css" />
     <link href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic" rel="stylesheet" type="text/css" />
     <!-- Core theme CSS (includes Bootstrap)-->
+        <link rel="stylesheet" href="https://bootswatch.com/4/yeti/bootstrap.min.css">
+    <!-- FONT AWESOEM -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
     <link href="css/styles.css" rel="stylesheet" />
@@ -24,7 +60,7 @@
     <!-- Navigation-->
     <nav class="navbar navbar-expand-lg bg-secondary text-uppercase fixed-top" id="mainNav">
         <div class="container">
-            <a class="navbar-brand" href="index.html">HappyChild</a>
+            <a class="navbar-brand" href="postlogin.html">HappyChild</a>
             <button class="navbar-toggler text-uppercase font-weight-bold bg-primary text-white rounded" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
                 Menu
                 <i class="fas fa-bars"></i>
@@ -37,27 +73,55 @@
     </nav>
     <!-- Masthead-->
     <header class="masthead bg-primary text-white text-center">
-        <div class="modal-dialog text-center">
-            <div class="col-sm-8 main-section">
-                <div class="modal-content">
-                    <div class="col-12 user-img">
-                        <img src="images/user.png" th:src="@{/images/user.png}" />
-                    </div>
-                    <form class="col-12" action="db.php" method="post">
-                        <div class="form-group" id="user-group">
-                            <input type="text" class="form-control" placeholder="Nombre de usuario" name="username" />
-                        </div>
-                        <div class="form-group" id="contrasena-group">
-                            <input type="password" class="form-control" placeholder="Contrasena" name="password" />
-                        </div>
-                        <button type="submit" class="btn btn-primary"><i class="fas fa-sign-in-alt"></i>  Ingresar </button>
-                    </form>
-                    <div class="col-12 forgot">
-                        <a href="#">Recordar contrasena?</a>
-                    </div>
-                </div>
-            </div>
+            <div class="col-sm-8">
+
+<!--<div class="container p-4">
+  <div class="row">
+    <div class="col-md-4 mx-auto">
+      <div class="card card-body"> -->
+      <form action="editar.php?id=<?php echo $_GET['id']; ?>" method="POST">
+        <div class="form-group">
+          <input name="titulo" type="text" class="form-control" value="<?php echo $title; ?>">
         </div>
+        <div class="form-group">
+           <textarea name="descripcion" rows="2" class="form-control" ><?php echo $description;?></textarea>
+        </div>
+        <div class="form-group">
+           <textarea name="link" class="form-control" cols="30" rows="10"><?php echo $link;?></textarea>
+        </div>
+        <button class="btn-success" name="update">
+          Update</button>
+      </form>
+     <div class="col-lg-4 mb-4 mb-lg-4">
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th>Title</th>
+            <th>Description</th>
+            <th>Link</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <?php
+          $query = "SELECT * FROM contenido";
+          $result= mysqli_query($conn, $query);    
+
+          while($row = mysqli_fetch_assoc($result)) { ?>
+          <tr>
+            <td><?php echo $row['titulo']; ?></td>
+            <td><?php echo $row['descripcion']; ?></td>
+            <td><?php echo $row['link']; ?></td>
+          </tr>
+          <?php } ?>
+        </tbody>
+      </table>
+      </div>
+    </div>
+    </div>
+  </div>
+</div>
+            </div>
     </header>
     <!-- Footer-->
     <footer class="footer text-center">
@@ -104,6 +168,9 @@
     <!-- * *                               SB Forms JS                               * *-->
     <!-- * * Activate your form at https://startbootstrap.com/solution/contact-forms * *-->
     <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *-->
+    script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
     <script src="https://cdn.startbootstrap.com/sb-forms-latest.js"></script>
 </body>
 </html>

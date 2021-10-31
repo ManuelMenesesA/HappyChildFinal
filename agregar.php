@@ -3,8 +3,8 @@
 include('db.php');
 
 if (isset($_POST['agregar'])) {
-  $title = $_POST['title'];
-  $description = $_POST['description'];
+  $title = $_POST['titulo'];
+  $description = $_POST['descripcion'];
   $link = $_POST['link'];
   $query= "INSERT INTO contenido(titulo, descripcion,link) VALUES ('$title', '$description','$link')";
   $result = mysqli_query($conn, $query);
@@ -14,7 +14,7 @@ if (isset($_POST['agregar'])) {
 
   $_SESSION['message'] = 'guardado exitoso';
   $_SESSION['message_type'] = 'success';
-  header('Location: crud.php');
+  header('Location: crudd.php');
 
 }
 

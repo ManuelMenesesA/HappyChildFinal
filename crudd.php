@@ -42,8 +42,7 @@
     </nav>
     <!-- Masthead-->
     <header class="masthead bg-primary text-white text-center">
-        <div class="modal-dialog text-center">
-            <div class="col-sm-8 main-section">
+            <div class="col-sm-8">
       <!-- MESSAGES -->
 
       <?php if (isset($_SESSION['message'])) { ?>
@@ -65,12 +64,11 @@
             <textarea name="descripcion" rows="2" class="form-control" placeholder="Descripcion"></textarea>
           </div>
           <div class="form-group">
-            <input type="text" name="link" class="form-control" placeholder="link">
+            <textarea type="text" name="link" class="form-control" placeholder="link"></textarea>
           </div>
           <input type="submit" name="agregar" class="btn btn-success btn-block" value="Agregar">
         </form>
       </div>
-    </div>
     <div class="col-md-3 col-lg-6 mb-5">
       <table class="table table-bordered">
         <thead>
@@ -85,16 +83,16 @@
 
           <?php
           $query = "SELECT * FROM contenido";
-          $conte= mysqli_query($conn, $query);    
+          $result= mysqli_query($conn, $query);    
 
-          while($row = mysqli_fetch_assoc($conte)) { ?>
+          while($row = mysqli_fetch_assoc($result)) { ?>
           <tr>
             <td><?php echo $row['titulo']; ?></td>
             <td><?php echo $row['descripcion']; ?></td>
             <td><?php echo $row['link']; ?></td>
             <td>
-              <a href="editar.php" class="btn btn-secondary">  <i class="fas fa-marker"></i> </a>
-              <a href="eliminar.php" class="btn btn-danger"> <i class="far fa-trash-alt"></i> </a>
+              <a href="editar.php?id=<?php echo $row['id']?>" class="btn btn-secondary">  <i class="fas fa-marker"></i> </a>
+              <a href="eliminar.php?id=<?php echo $row['id']?>" class="btn btn-danger"> <i class="far fa-trash-alt"></i> </a>
             </td>
           </tr>
           <?php } ?>
@@ -102,7 +100,7 @@
       </table>
     </div>
   </div>
-            </div>
+    </div>
         </div>
     </header>
     <!-- Footer-->
