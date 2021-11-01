@@ -1,3 +1,6 @@
+<?php include("db.php"); ?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -20,14 +23,14 @@
     <!-- Navigation-->
     <nav class="navbar navbar-expand-lg bg-secondary text-uppercase fixed-top" id="mainNav">
         <div class="container">
-            <a class="navbar-brand" href="postlogin.html">HappyChild</a>
+            <a class="navbar-brand" href="index.html">HappyChild</a>
             <button class="navbar-toggler text-uppercase font-weight-bold bg-primary text-white rounded" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
                 Menu
                 <i class="fas fa-bars"></i>
             </button>
             <div class="collapse navbar-collapse" id="navbarResponsive">
                 <ul class="navbar-nav ms-auto">
-                    <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" href="matematicas.html">Matematicas</a></li>
+                    <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" href="matematicas.php">Matematicas</a></li>
                     <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" href="ingles.html">Ingles</a></li>
                     <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" href="lenguaje.html">Lenguaje</a></li>
                     <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" href="edfisica.html">Ed. Fisica</a></li>
@@ -52,42 +55,43 @@
                 <div class="divider-custom-icon"><i class="fas fa-star"></i></div>
                 <div class="divider-custom-line"></div>
             </div>
+            <div class="col-md-3 col-lg-6 mb-5">
+                <br />
+            </div>
             <!-- Portfolio Grid Items-->
             <div class="row justify-content-center">
                 <!-- Portfolio Item 1-->
-                <div class="col-md-3 col-lg-6 mb-5">
-                    <div class="portfolio-item mx-auto" data-bs-toggle="modal" data-bs-target="#portfolioModal1">
-                        <div class="portfolio-item-caption d-flex align-items-center justify-content-center h-100 w-100">
-                            <div class="portfolio-item-caption-content text-center text-white"><i class="fas fa-plus fa-3x"></i></div>
-                        </div>
-                        <img class="img-fluid" src="images/numeros.jpg" alt="..." />
-                    </div>
-                </div>
-                <!-- Portfolio Item 2-->
-                <div class="col-md-3 col-lg-6 mb-5">
-                    <div class="portfolio-item mx-auto" data-bs-toggle="modal" data-bs-target="#portfolioModal2">
-                        <div class="portfolio-item-caption d-flex align-items-center justify-content-center h-100 w-100">
-                            <div class="portfolio-item-caption-content text-center text-white"><i class="fas fa-plus fa-3x"></i></div>
-                        </div>
-                        <img class="img-fluid" src="images/sumas.jpg" alt="..." />
-                    </div>
-                </div>
-                <!-- Portfolio Item 3-->
-                <div class="col-md-3 col-lg-6 mb-5">
-                    <div class="portfolio-item mx-auto" data-bs-toggle="modal" data-bs-target="#portfolioModal3">
-                        <div class="portfolio-item-caption d-flex align-items-center justify-content-center h-100 w-100">
-                            <div class="portfolio-item-caption-content text-center text-white"><i class="fas fa-plus fa-3x"></i></div>
-                        </div>
-                        <img class="img-fluid" src="images/restas.jpg" alt="..." />
-                    </div>
-                </div>
-                <br />
-                <!-- Portfolio Item 5-->
-                <div class="col-md-3 col-lg-6 mb-5">
-                    <iframe width="560" height="315" src="https://www.youtube.com/embed/Lqf5WmulMYI" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                <div class="col-md-1 col-lg-8 mb-5">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Title</th>
+                                <th>Description</th>
+                                <th>Link</th>
+                                <!--<th>Action</th>-->
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            <?php
+                            $query = "SELECT * FROM contenido";
+                            $result= mysqli_query($conn, $query);
+
+                            while($row = mysqli_fetch_assoc($result)) { ?>
+                            <tr>
+                                <td><?php echo $row['titulo']; ?></td>
+                                <td><?php echo $row['descripcion']; ?></td>
+                                <td><?php echo $row['link']; ?></td>
+                                <td>
+                                  <!--  <a href="editar.php?id=<?php echo $row['id']?>" class="btn btn-secondary">  <i class="fas fa-marker"></i> </a>
+                                    <a href="eliminar.php?id=<?php echo $row['id']?>" class="btn btn-danger"> <i class="far fa-trash-alt"></i> </a>-->
+                                </td>
+                            </tr>
+                            <?php } ?>
+                        </tbody>
+                    </table>
                 </div>
             </div>
-        </div>
     </section>
     <!-- Footer-->
     <footer class="footer text-center">
